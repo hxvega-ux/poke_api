@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Pokédex</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando Pokémon...</p>
+  </div>
+
+  <ion-list *ngIf="!loading">
+    <ion-item *ngFor="let pokemon of pokemons" button (click)="goToDetail(pokemon.id)">
+      <ion-thumbnail slot="start">
+        <img [src]="pokemon.image" [alt]="pokemon.name" />
+      </ion-thumbnail>
+      <ion-label class="ion-text-capitalize">
+        <h2>{{ pokemon.name }}</h2>
+        <p>#{{ pokemon.id }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>

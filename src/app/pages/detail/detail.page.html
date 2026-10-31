@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title class="ion-text-capitalize">{{ pokemon?.name || 'Detalle' }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="loading" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando información del Pokémon...</p>
+  </div>
+
+  <ion-card *ngIf="!loading && pokemon">
+    <img 
+      [src]="pokemon.sprites?.other?.['official-artwork']?.front_default" 
+      [alt]="pokemon.name"
+      style="width: 200px; margin: 16px auto 0; display: block;" 
+    />
+
+    <ion-card-header class="ion-text-center">
+      <ion-card-title class="ion-text-capitalize">
+        {{ pokemon.name }} {{ formatId(pokemon.id) }}
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <!-- Tipos -->
+      <div class="ion-text-center ion-margin-bottom">
+        <ion-badge *ngFor="let typeInfo of pokemon.types" color="tertiary" style="margin: 0 4px;" class="ion-text-capitalize">
+          {{ typeInfo.type.name }}
+        </ion-badge>
+      </div>
+
+      <!-- Altura y Peso -->
+      <ion-grid>
+        <ion-row class="ion-text-center">
+          <ion-col>
+            <strong>Altura:</strong>
+            <p>{{ getMeterHeight(pokemon.height) }}</p>
+          </ion-col>
+          <ion-col>
+            <strong>Peso:</strong>
+            <p>{{ getKgWeight(pokemon.weight) }}</p>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <!-- Estadísticas Base -->
+      <h3 class="ion-margin-top">Estadísticas Base</h3>
+      <div *ngFor="let stat of pokemon.stats" class="ion-margin-bottom">
+        <ion-label class="ion-text-capitalize">
+          {{ stat.stat.name }}: {{ stat.base_stat }}
+        </ion-label>
+        <ion-progress-bar [value]="stat.base_stat / 255" color="success"></ion-progress-bar>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
